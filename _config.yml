@@ -11,7 +11,7 @@ locale                   : "en-US"
 title                    : "Xyxing's Web"
 title_separator          : "-"
 name                     : &name "Xu Yixing"
-description              : &description "NJU junior in FE"
+description              : &description "NJU junior in Financial Engeneering"
 url                      : https://smallgamerun.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "smallgamerun/smallgamerun.github.io"
@@ -21,11 +21,11 @@ repository               : "smallgamerun/smallgamerun.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "my1.png"
+  avatar           : "my2.png"
   name             : "Xu Yixing"
   pronouns         : # example: "she/her"  
-  bio              : "NJU junior in FE"
-  location         : #"Nanjing, China"
+  bio              : "NJU junior in Financial Engeneering"
+  location         : # "Nanjing, China"
   employer         : # "Red Brick University"
   uri              : # URL
   email            : "xyxing321@163.com" 
