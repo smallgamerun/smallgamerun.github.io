@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "./ProjectCard.astro";
+import { copy, type Language } from "../data/site";
+import { getProjects } from "../lib/content";
+const { language } = Astro.props as { language: Language };
+const t = copy[language];
+const projects = await getProjects(language);
+const translationPath = language === "zh" ? "/en/projects/" : "/projects/";
+---
+
+<BaseLayout language={language} title={t.projectPageTitle} description={t.projectPageIntro} translationPath={translationPath}>
+  <section class="page-hero section">
+    <div class="container narrow">
+      <p class="eyebrow"><span class="status-dot"></span>SELECTED_WORK</p>
+      <h1>{t.projectPageTitle}</h1>
+      <p>{t.projectPageIntro}</p>
+    </div>
+  </section>
+  <section class="section section-tight">
+    <div class="container"><div class="project-list">{projects.map((project) => <ProjectCard project={project} language={language} />)}</div></div>
+  </section>
+</BaseLayout>
