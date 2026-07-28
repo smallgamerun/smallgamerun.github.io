@@ -1,0 +1,14 @@
+---
+import { getCollection } from "astro:content";
+import PostPage from "../../components/PostPage.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts
+    .filter((post) => post.data.language === "zh" && !post.data.draft)
+    .map((post) => ({ params: { slug: post.data.path }, props: { post } }));
+}
+
+const { post } = Astro.props;
+---
+<PostPage post={post} language="zh" />
