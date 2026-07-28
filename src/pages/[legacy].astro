@@ -1,0 +1,32 @@
+---
+export function getStaticPaths() {
+  const redirects = {
+    cv: "/about/",
+    publications: "/projects/",
+    talks: "/blog/",
+    teaching: "/blog/",
+    portfolio: "/projects/",
+    "year-archive": "/blog/"
+  } as const;
+  return Object.entries(redirects).map(([legacy, target]) => ({
+    params: { legacy },
+    props: { target }
+  }));
+}
+
+const { target } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={new URL(target, Astro.site)} />
+    <title>页面已迁移</title>
+  </head>
+  <body>
+    <p>页面已迁移。<a href={target}>继续访问</a></p>
+  </body>
+</html>
