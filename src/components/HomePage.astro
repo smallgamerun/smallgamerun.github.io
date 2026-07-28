@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "./ProjectCard.astro";
+import PostCard from "./PostCard.astro";
+import { copy, site, type Language } from "../data/site";
+import { getPosts, getProjects } from "../lib/content";
+
+const { language } = Astro.props as { language: Language };
+const t = copy[language];
+const prefix = language === "en" ? "/en" : "";
+const projects = (await getProjects(language)).filter((project) => project.data.featured).slice(0, 3);
+const posts = (await getPosts(language)).slice(0, 2);
+const translationPath = language === "zh" ? "/en/" : "/";
+---
+
+<BaseLayout language={language} translationPath={translationPath}>
+  <section class="hero section">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot"></span>{t.eyebrow}</p>
+        <h1>{t.title.split("\n").map((line) => <span>{line}</span>)}</h1>
+        <p class="hero-intro">{t.intro}</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href={`${prefix}/projects/`}>{t.primaryCta}<span aria-hidden="true">↗</span></a>
+          <a class="button button-secondary" href={`${prefix}/blog/`}>{t.secondaryCta}<span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <aside class="signal-panel" aria-label={language === "zh" ? "个人概览" : "Profile overview"}>
+        <div class="panel-topline"><span>PROFILE_SIGNAL</span><span>ONLINE</span></div>
+        <img src={site.avatar} alt={site.name} width="240" height="240" />
+        <div class="signal-content">
+          <p class="signal-name">{site.name}</p>
+          <p>Financial Engineering</p>
+          <div class="signal-stats">
+            <span><b>03</b>{language === "zh" ? "精选项目" : "Selected work"}</span>
+            <span><b>02</b>{language === "zh" ? "语言" : "Languages"}</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="projects-title">
+    <div class="container">
+      <div class="section-heading">
+        <div><p class="section-number">01 / WORK</p><h2 id="projects-title">{t.projectsTitle}</h2></div>
+        <p>{t.projectsIntro}</p>
+      </div>
+      <div class="project-list">{projects.map((project) => <ProjectCard project={project} language={language} />)}</div>
+      <a class="section-link" href={`${prefix}/projects/`}>{t.allProjects}<span aria-hidden="true"> →</span></a>
+    </div>
+  </section>
+
+  <section class="section writing-section" aria-labelledby="posts-title">
+    <div class="container">
+      <div class="section-heading">
+        <div><p class="section-number">02 / NOTES</p><h2 id="posts-title">{t.postsTitle}</h2></div>
+        <p>{t.postsIntro}</p>
+      </div>
+      <div class="post-grid">{posts.map((post) => <PostCard post={post} language={language} />)}</div>
+      <a class="section-link" href={`${prefix}/blog/`}>{t.allPosts}<span aria-hidden="true"> →</span></a>
+    </div>
+  </section>
+</BaseLayout>
