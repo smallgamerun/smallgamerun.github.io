@@ -1,0 +1,18 @@
+---
+import { copy, site, type Language } from "../data/site";
+const { language } = Astro.props as { language: Language };
+const t = copy[language];
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <p class="footer-name">{site.name}</p>
+      <p>{t.footer}</p>
+    </div>
+    <div class="footer-meta">
+      <a href={site.github} rel="me">GitHub</a>
+      <span>© {new Date().getFullYear()}</span>
+    </div>
+  </div>
+</footer>
