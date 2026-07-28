@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { copy, site, type Language } from "../data/site";
+const { language } = Astro.props as { language: Language };
+const t = copy[language];
+const translationPath = language === "zh" ? "/en/about/" : "/about/";
+---
+
+<BaseLayout language={language} title={t.aboutTitle} description={t.aboutLead} translationPath={translationPath}>
+  <section class="page-hero section">
+    <div class="container narrow">
+      <p class="eyebrow"><span class="status-dot"></span>ABOUT_ME</p>
+      <h1>{t.aboutTitle}</h1>
+      <p>{t.aboutLead}</p>
+    </div>
+  </section>
+  <section class="section section-tight">
+    <div class="container about-grid">
+      <div class="about-copy">
+        {t.aboutBody.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <aside class="focus-card">
+        <p class="section-number">01 / FOCUS</p>
+        <h2>{t.focusTitle}</h2>
+        <ol>{t.focus.map((item) => <li>{item}</li>)}</ol>
+      </aside>
+      <div class="connect-card">
+        <div>
+          <p class="section-number">02 / CONNECT</p>
+          <h2>{t.connectTitle}</h2>
+          <p>{t.connectBody}</p>
+        </div>
+        <a class="button button-primary" href={site.github}>{t.viewGithub}<span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
