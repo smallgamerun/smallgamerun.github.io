@@ -1,0 +1,39 @@
+---
+import { copy, site, type Language } from "../data/site";
+
+interface Props {
+  language: Language;
+  translationPath?: string;
+}
+
+const { language, translationPath } = Astro.props;
+const t = copy[language];
+const prefix = language === "en" ? "/en" : "";
+const otherLabel = language === "zh" ? "EN" : "中文";
+const languageHref = translationPath ?? (language === "zh" ? "/en/" : "/");
+const path = Astro.url.pathname;
+const links = [
+  { label: t.nav.home, href: `${prefix}/` },
+  { label: t.nav.projects, href: `${prefix}/projects/` },
+  { label: t.nav.blog, href: `${prefix}/blog/` },
+  { label: t.nav.about, href: `${prefix}/about/` }
+];
+---
+
+<header class="site-header">
+  <a class="skip-link" href="#main-content">{language === "zh" ? "跳到主要内容" : "Skip to content"}</a>
+  <div class="container header-inner">
+    <a class="brand" href={`${prefix}/`} aria-label={`${site.name} ${t.nav.home}`}>
+      <span class="brand-mark" aria-hidden="true">XY</span>
+      <span>{site.name}</span>
+    </a>
+    <nav class="nav" aria-label={language === "zh" ? "主导航" : "Primary navigation"}>
+      {links.map((link) => (
+        <a class:list={["nav-link", path === link.href && "is-active"]} href={link.href}>{link.label}</a>
+      ))}
+    </nav>
+    <a class="language-switch" href={languageHref} hreflang={language === "zh" ? "en" : "zh"}>
+      {otherLabel}
+    </a>
+  </div>
+</header>
