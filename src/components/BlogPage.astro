@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "./PostCard.astro";
+import { copy, type Language } from "../data/site";
+import { getPosts } from "../lib/content";
+const { language } = Astro.props as { language: Language };
+const t = copy[language];
+const posts = await getPosts(language);
+const translationPath = language === "zh" ? "/en/blog/" : "/blog/";
+---
+
+<BaseLayout language={language} title={t.blogPageTitle} description={t.blogPageIntro} translationPath={translationPath}>
+  <section class="page-hero section">
+    <div class="container narrow">
+      <p class="eyebrow"><span class="status-dot"></span>FIELD_NOTES</p>
+      <h1>{t.blogPageTitle}</h1>
+      <p>{t.blogPageIntro}</p>
+    </div>
+  </section>
+  <section class="section section-tight">
+    <div class="container"><div class="post-grid">{posts.map((post) => <PostCard post={post} language={language} />)}</div></div>
+  </section>
+</BaseLayout>
