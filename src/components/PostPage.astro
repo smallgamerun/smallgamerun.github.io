@@ -1,0 +1,49 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { copy, type Language } from "../data/site";
+import { readingMinutes } from "../lib/content";
+
+const { post, language } = Astro.props as {
+  post: CollectionEntry<"blog">;
+  language: Language;
+};
+const { Content } = await render(post);
+const t = copy[language];
+const allPosts = await getCollection("blog");
+const counterpart = allPosts.find(
+  (entry) => entry.data.translationKey === post.data.translationKey && entry.data.language !== language
+);
+const translationPath = counterpart
+  ? counterpart.data.language === "zh"
+    ? `/blog/${counterpart.data.path}/`
+    : `/en/blog/${counterpart.data.path}/`
+  : undefined;
+const date = new Intl.DateTimeFormat(language === "zh" ? "zh-CN" : "en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric"
+}).format(post.data.date);
+---
+
+<BaseLayout
+  language={language}
+  title={post.data.title}
+  description={post.data.description}
+  translationPath={translationPath}
+  article
+>
+  <article class="article">
+    <header class="article-header container narrow">
+      <a class="text-link" href={language === "zh" ? "/blog/" : "/en/blog/"}>← {t.backToBlog}</a>
+      <div class="post-meta">
+        <time datetime={post.data.date.toISOString()}>{date}</time>
+        <span>{readingMinutes(post.body ?? "")} {t.minRead}</span>
+      </div>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      <ul class="tag-list">{post.data.tags.map((tag) => <li>{tag}</li>)}</ul>
+    </header>
+    <div class="article-body container prose"><Content /></div>
+  </article>
+</BaseLayout>
