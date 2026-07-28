@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { copy, type Language } from "../data/site";
+const { project, language } = Astro.props as {
+  project: CollectionEntry<"projects">;
+  language: Language;
+};
+const t = copy[language];
+---
+
+<article class="project-card">
+  <div class="card-index" aria-hidden="true">{String(project.data.order).padStart(2, "0")}</div>
+  <div class="project-main">
+    <div class="card-heading">
+      <div>
+        <p class="card-kicker">{project.data.year} · {project.data.role}</p>
+        <h3>{project.data.title}</h3>
+      </div>
+      <a class="arrow-link" href={project.data.repo} aria-label={`${t.source}: ${project.data.title}`}>
+        <span>{t.source}</span><span aria-hidden="true">↗</span>
+      </a>
+    </div>
+    <p>{project.data.description}</p>
+    <ul class="tag-list" aria-label={t.stack}>
+      {project.data.tech.map((item) => <li>{item}</li>)}
+    </ul>
+  </div>
+</article>
